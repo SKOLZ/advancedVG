@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.test.base.BaseObject;
 
-public abstract class AbsCamera extends BaseObject {
+public abstract class AbsCamera extends BaseObject implements GameCamera {
 
 	protected Matrix4 projMatrix;
 
@@ -22,7 +22,6 @@ public abstract class AbsCamera extends BaseObject {
 		Matrix4 rotZ = getZRotationMatrix();
 		Matrix4 sc = getScaleMatrix();
 		Matrix4 ans = new Matrix4(getProjMatrix());
-
 		ans.mul(trans);
 		ans.mul(rotX);
 		ans.mul(rotY);

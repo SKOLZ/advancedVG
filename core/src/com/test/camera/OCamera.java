@@ -6,14 +6,14 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.test.camera.AbsCamera;
 
-public class OCamera extends AbsCamera implements GameCamera {
+public class OCamera extends AbsCamera {
 
 	public static final float DEFAULT_X = 10.0f;
 	public static final float DEFAULT_Y = 10.0f;
 	public static final float DEFAULT_FAR = 100.0f;
 	public static final float DEFAULT_NEAR = 0.01f;
-	public static final Vector3 DEFAULT_POS = new Vector3(0, 0 ,0);
-	public static final Vector3 DEFAULT_ROT = new Vector3(0, 0 ,0);
+	public static final Vector3 DEFAULT_POS = new Vector3(0, 0, 0);
+	public static final Vector3 DEFAULT_ROT = new Vector3(0, 0, 0);
 
 	public OCamera() {
 		this(DEFAULT_X, DEFAULT_Y, DEFAULT_FAR, DEFAULT_NEAR, DEFAULT_POS, DEFAULT_ROT);
@@ -21,7 +21,7 @@ public class OCamera extends AbsCamera implements GameCamera {
 
 	public OCamera(float x, float y, float far, float near, Vector3 pos, Vector3 rot) {
 		createProjectionMatrix(x, y, far, near);
-		this.setPosition(position);
+		this.setPosition(pos);
 		this.setRotation(rot);
 	}
 
@@ -47,7 +47,7 @@ public class OCamera extends AbsCamera implements GameCamera {
 		
 	}
 
-	@Override
+
 	public void update() {
 
 	}
