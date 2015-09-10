@@ -23,7 +23,6 @@ public abstract class AbsCamera extends BaseObject {
 		Matrix4 sc = getScaleMatrix();
 		Matrix4 ans = new Matrix4(getProjMatrix());
 
-		System.out.println(ans);
 		ans.mul(trans);
 		ans.mul(rotX);
 		ans.mul(rotY);

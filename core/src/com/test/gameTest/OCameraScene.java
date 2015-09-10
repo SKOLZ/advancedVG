@@ -13,9 +13,10 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.test.camera.GameCamera;
+import com.test.camera.MoveableOCamera;
 import com.test.camera.OCamera;
 
-public class MyGdxGame extends ApplicationAdapter {
+public class OCameraScene extends ApplicationAdapter {
 	Mesh spaceshipMesh;
 	ShaderProgram shaderProgram;
 	GameCamera camera;
@@ -36,7 +37,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	            VertexAttribute.Position(), VertexAttribute.Normal(), VertexAttribute.TexCoords(0));
 		spaceshipMesh.setVertices(data.meshes.get(0).vertices);
 		spaceshipMesh.setIndices(data.meshes.get(0).parts[0].indices);
-		camera = new OCamera();
+		camera = new MoveableOCamera();
 	}
 
 	@Override

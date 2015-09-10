@@ -1,5 +1,7 @@
 package com.test.camera;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.test.camera.AbsCamera;
@@ -47,6 +49,6 @@ public class OCamera extends AbsCamera implements GameCamera {
 
 	@Override
 	public void update() {
-		// TO DO
+
 	}
 }
