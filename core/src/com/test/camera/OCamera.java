@@ -8,11 +8,11 @@ import com.test.camera.AbsCamera;
 
 public class OCamera extends AbsCamera {
 
-	public static final float DEFAULT_X = 10.0f;
-	public static final float DEFAULT_Y = 10.0f;
+	public static final float DEFAULT_X = 5.0f;
+	public static final float DEFAULT_Y = 5.0f;
 	public static final float DEFAULT_FAR = 100.0f;
 	public static final float DEFAULT_NEAR = 0.01f;
-	public static final Vector3 DEFAULT_POS = new Vector3(0, 0, 0);
+	public static final Vector3 DEFAULT_POS = new Vector3(0, 0, 5);
 	public static final Vector3 DEFAULT_ROT = new Vector3(0, 0, 0);
 
 	public OCamera() {
@@ -29,17 +29,17 @@ public class OCamera extends AbsCamera {
 		float[] values = projMatrix.getValues();
 		values[0] *= size;
 		values[5] *= size;
-		setProjMatrix(new Matrix4(values));
+		setProjMatrix(new Matrix4(values).tra());
 	}
-	
+
 	public void createProjectionMatrix(float x, float y, float far, float near) {
 		float[] values = {
-				2 / x, 0, 0, 0,
-				0, 2 / y, 0, 0,
-				0, 0, -2 / (far - near), (far + near) / (far - near),
+				1 / x, 0, 0, 0,
+				0, 1 / y, 0, 0,
+				0, 0, -2 / (far - near), -(far + near) / (far - near),
 				0, 0, 0, 1
 		};
-		setProjMatrix(new Matrix4(values));
+		setProjMatrix(new Matrix4(values).tra());
 	}
 
 

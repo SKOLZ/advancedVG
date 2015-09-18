@@ -20,13 +20,10 @@ public abstract class AbsCamera extends BaseObject implements GameCamera {
 		Matrix4 rotX = getXRotationMatrix();
 		Matrix4 rotY = getYRotationMatrix();
 		Matrix4 rotZ = getZRotationMatrix();
-		Matrix4 sc = getScaleMatrix();
+		rotX.mul(rotY).mul(rotZ);
 		Matrix4 ans = new Matrix4(getProjMatrix());
-		ans.mul(trans);
-		ans.mul(rotX);
-		ans.mul(rotY);
-		ans.mul(rotZ);
-		return ans.mul(sc);
+		Matrix4 view = new Matrix4(trans.mul(rotX)).inv();
+		return ans.mul(view);
 	}
 
 	//public abstract void lookAt(Vector3 position);

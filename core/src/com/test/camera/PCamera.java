@@ -30,7 +30,7 @@ public class PCamera extends AbsCamera implements GameCamera {
                 0, 1 / (float)Math.tan(y / 2), 0, 0,
                 0, 0, -(near + far) / (far - near), -2 * (near * far) / (far - near),
                 0, 0, -1, 0 });
-        setProjMatrix(matrix);
+        setProjMatrix(matrix.tra());
     }
 
     @Override

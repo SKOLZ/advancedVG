@@ -9,6 +9,8 @@ public class BaseObject implements GameObject {
     protected Vector3 rotation;
     protected Vector3 scale;
 
+    public final static Vector3 UP_VECTOR = new Vector3(0, 1, 0);
+
     public BaseObject() {
         this(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
     }

@@ -11,8 +11,16 @@ public class MoveableOCamera extends OCamera {
 
     public float moveSpeed = 0.04f;
     public float rotSpeed = 0.02f;
+    public int i = 0;
+    public int MAX = 100;
 
     public void update() {
+        i++;
+        if(i == MAX) {
+            i = 0;
+            System.out.println("Rotation: " + rotation);
+            System.out.println("Position: " + position);
+        }
         checkForwardOrBack();
         checkLeftOrRight();
         checkRotation();
@@ -43,25 +51,22 @@ public class MoveableOCamera extends OCamera {
     }
 
     public void moveLeft() {
-        position.add(getLeft().scl(moveSpeed));
+        position.add(getRight().scl(-moveSpeed));
     }
 
     public void moveRight() {
-        position.add(getLeft().scl(-moveSpeed));
+        position.add(getRight().scl(moveSpeed));
     }
 
     public Vector3 getForward() {
-        Vector3 forward = new Vector3(0, 0, -1);
-        forward.rotate(new Vector3(1, 0, 0), rotation.x);
-        forward.rotate(new Vector3(0, 1, 0), rotation.y);
+        Vector3 forward = new Vector3(0, 0, 1);
+        forward.rotateRad(new Vector3(1, 0, 0), rotation.x);
+        forward.rotateRad(new Vector3(0, 1, 0), rotation.y);
         return forward;
     }
 
-    public Vector3 getLeft() {
-        Vector3 left = new Vector3(1, 0, 0).rotateRad(new Vector3(1, 0, 0), rotation.x);
-        left.rotate(new Vector3(0, 1, 0), rotation.y);
-        left.rotate(new Vector3(0, 0, 1), rotation.z);
-        return left;
+    public Vector3 getRight() {
+        return getForward().crs(UP_VECTOR);
     }
 
     private void checkRotation() {
