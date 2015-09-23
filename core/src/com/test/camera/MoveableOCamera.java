@@ -51,11 +51,11 @@ public class MoveableOCamera extends OCamera {
     }
 
     public void moveLeft() {
-        position.add(getRight().scl(-moveSpeed));
+        position.add(getLeft().scl(moveSpeed));
     }
 
     public void moveRight() {
-        position.add(getRight().scl(moveSpeed));
+        position.add(getLeft().scl(-moveSpeed));
     }
 
     public Vector3 getForward() {
@@ -65,7 +65,7 @@ public class MoveableOCamera extends OCamera {
         return forward;
     }
 
-    public Vector3 getRight() {
+    public Vector3 getLeft() {
         return getForward().crs(UP_VECTOR);
     }
 
