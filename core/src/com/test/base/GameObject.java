@@ -4,12 +4,12 @@ import com.badlogic.gdx.math.Vector3;
 
 public interface GameObject {
 
-    public Vector3 getPosition();
-    public void setPosition(Vector3 pos);
+    Vector3 getPosition();
+    void setPosition(Vector3 pos);
 
-    public Vector3 getRotation();
-    public void setRotation(Vector3 rot);
+    Vector3 getRotation();
+    void setRotation(Vector3 rot);
 
-    public Vector3 getScale();
-    public void setScale(Vector3 scale);
+    Vector3 getScale();
+    void setScale(Vector3 scale);
 }
