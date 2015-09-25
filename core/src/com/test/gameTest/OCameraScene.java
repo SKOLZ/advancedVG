@@ -53,7 +53,7 @@ public class OCameraScene extends ApplicationAdapter {
 		shaderProgram.setUniformi("u_texture", 0);
 		camera.update();
 		shaderProgram.begin();
-		shaderProgram.setUniformMatrix("u_worldView", camera.getProjection());
+        shaderProgram.setUniformMatrix("u_mvp", camera.getProjection());
 		spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
 		shaderProgram.end();
 	}
