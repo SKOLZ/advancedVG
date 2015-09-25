@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.sun.deploy.uitoolkit.impl.text.TextUIToolkit;
 import com.test.camera.GameCamera;
 import com.test.camera.MoveablePCamera;
 

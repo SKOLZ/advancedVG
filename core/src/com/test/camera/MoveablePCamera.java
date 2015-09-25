@@ -4,9 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
 
-/**
- * Created by naki on 23/09/15.
- */
 public class MoveablePCamera extends PCamera {
     public float moveSpeed = 0.04f;
     public float rotSpeed = 0.02f;
