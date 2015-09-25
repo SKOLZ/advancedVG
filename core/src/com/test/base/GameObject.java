@@ -6,6 +6,7 @@ public interface GameObject {
 
     Vector3 getPosition();
     void setPosition(Vector3 pos);
+    float [] getPositionAsV4();
 
     Vector3 getRotation();
     void setRotation(Vector3 rot);

@@ -30,6 +30,10 @@ public class BaseObject implements GameObject {
         return position;
     }
 
+    public float[] getPositionAsV4() {
+        return new float[]{ position.x, position.y, position.z, 1 };
+    }
+
     @Override
     public void setPosition(Vector3 pos) {
         this.position = pos;
