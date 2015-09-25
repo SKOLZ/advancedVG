@@ -9,6 +9,6 @@ import com.test.gameTest.PointLightScene;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new OCameraScene(), config);
+		new LwjglApplication(new PointLightScene(), config);
 	}
 }
