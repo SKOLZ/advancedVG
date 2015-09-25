@@ -61,6 +61,7 @@ public class PointLightScene extends ApplicationAdapter {
         shaderProgram.setUniformMatrix("u_mvp", camera.getProjection());
         shaderProgram.setUniform4fv("u_light_pos", pointLight.getPositionAsV4(), 0, 4);
         shaderProgram.setUniform4fv("u_light_c", pointLight.getColorAsV4(), 0, 4);
+        shaderProgram.setUniformf("u_light_in", pointLight.getIntensity());
         spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
         shaderProgram.end();
     }

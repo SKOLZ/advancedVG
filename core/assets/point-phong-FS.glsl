@@ -15,13 +15,16 @@ uniform vec4 u_light_pos;
 // Light color
 uniform vec4 u_light_c;
 
+// Light intensity
+uniform float u_light_in;
+
 void main() {
     vec4 texture_color = texture2D(u_texture, v_texCoords);
 	vec4 position = v_position;
 	vec4 normal = normalize(v_normal);
 	vec3 direction = normalize(u_light_pos.xyz - position.xyz);
 
-	vec4 light = max(0, (dot(normal.xyz, direction))) * texture_color;
+	vec4 light = max(0, (dot(normal.xyz, direction))) * texture_color * u_light_in;
     vec4 diffuse = light * u_light_c;
     gl_FragColor = vec4(diffuse.xyz, 1);
 }
