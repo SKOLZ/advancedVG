@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.test.base.ModelObject;
 import com.test.camera.GameCamera;
 import com.test.camera.MoveableOCamera;
 import com.test.camera.MoveablePCamera;
@@ -26,6 +27,7 @@ public class PointLightScene extends ApplicationAdapter {
     GameCamera camera;
     Texture texture;
     PointLight pointLight;
+    ModelObject model;
 
     @Override
     public void create () {
@@ -45,6 +47,7 @@ public class PointLightScene extends ApplicationAdapter {
         spaceshipMesh.setVertices(data.meshes.get(0).vertices);
         spaceshipMesh.setIndices(data.meshes.get(0).parts[0].indices);
         camera = new MoveablePCamera();
+        model = new ModelObject(spaceshipMesh, 0.6f, new Vector3(0.5f, 0.5f, 0), new Vector3(0, 0, 0));
         pointLight = new PointLight(new Vector3(0, 3, 0), new Vector3(0.3f, 1.0f, 0.3f), 1);
     }
 
@@ -57,12 +60,12 @@ public class PointLightScene extends ApplicationAdapter {
         texture.bind();
         camera.update();
         shaderProgram.begin();
-        shaderProgram.setUniformMatrix("u_model", new Matrix4());
-        shaderProgram.setUniformMatrix("u_mvp", camera.getProjection());
+        shaderProgram.setUniformMatrix("u_model", model.getTRS());
+        shaderProgram.setUniformMatrix("u_mvp", model.getTRS().mul(camera.getProjection()));
         shaderProgram.setUniform4fv("u_light_pos", pointLight.getPositionAsV4(), 0, 4);
         shaderProgram.setUniform4fv("u_light_c", pointLight.getColorAsV4(), 0, 4);
         shaderProgram.setUniformf("u_light_in", pointLight.getIntensity());
-        shaderProgram.setUniformf("u_shininess", 0.6f);
+        shaderProgram.setUniformf("u_shininess", model.getShininess());
         shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
         spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
         shaderProgram.end();

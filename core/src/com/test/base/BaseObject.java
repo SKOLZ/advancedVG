@@ -95,4 +95,13 @@ public class BaseObject implements GameObject {
                         0, 0, scale.z, 0,
                         0, 0, 0, 1 });
     }
+
+    public Matrix4 getTRS() {
+        Matrix4 trans = getTranslationMatrix();
+        Matrix4 rotX = getXRotationMatrix();
+        Matrix4 rotY = getYRotationMatrix();
+        Matrix4 rotZ = getZRotationMatrix();
+        rotX.mul(rotY).mul(rotZ);
+        return trans.mul(rotX).mul(getScaleMatrix());
+    }
 }
