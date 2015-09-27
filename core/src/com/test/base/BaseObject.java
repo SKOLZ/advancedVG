@@ -46,7 +46,21 @@ public class BaseObject implements GameObject {
 
     @Override
     public void setRotation(Vector3 rot) {
-        this.rotation = rot;
+        Vector3 normalizedRot = new Vector3(rot);
+        while(normalizedRot.x > 2.0f * (float)Math.PI) {
+            normalizedRot.x -= 2.0f * (float)Math.PI;
+        }
+        while(normalizedRot.y > 2.0f * (float)Math.PI) {
+            normalizedRot.y -= 2.0f * (float)Math.PI;
+        }
+        while(normalizedRot.y > 2.0f * (float)Math.PI) {
+            normalizedRot.y -= 2.0f * (float)Math.PI;
+        }
+        this.rotation = normalizedRot;
+    }
+
+    public float[] getRotationAsV4() {
+        return new float[]{ rotation.x, rotation.y, rotation.z, 1 };
     }
 
     @Override

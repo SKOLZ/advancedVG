@@ -5,10 +5,11 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.test.gameTest.OCameraScene;
 import com.test.gameTest.PCameraScene;
 import com.test.gameTest.PointLightScene;
+import com.test.gameTest.SpotlightScene;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new PointLightScene(), config);
+		new LwjglApplication(new SpotlightScene(), config);
 	}
 }
