@@ -10,26 +10,25 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.test.base.ModelObject;
 import com.test.camera.GameCamera;
-import com.test.camera.MoveableOCamera;
 import com.test.camera.MoveablePCamera;
+import com.test.light.DirectionalLight;
 import com.test.light.PointLight;
 
-public class PointLightScene extends ApplicationAdapter {
-    Mesh spaceshipMesh;
+public class DirectionalLightScene extends ApplicationAdapter {
+	Mesh spaceshipMesh;
     ShaderProgram shaderProgram;
     GameCamera camera;
     Texture texture;
-    PointLight pointLight;
+    DirectionalLight directionalLight;
     ModelObject model;
 
     @Override
-    public void create () {
+    public void create() {
         String vs = Gdx.files.internal("defaultVS.glsl").readString();
-        String fs = Gdx.files.internal("point-phong-FS.glsl").readString();
+        String fs = Gdx.files.internal("directional-phong-FS.glsl").readString();
         shaderProgram = new ShaderProgram(vs, fs);
         if (!shaderProgram.isCompiled()) {
             System.out.println(shaderProgram.getLog());
@@ -45,11 +44,11 @@ public class PointLightScene extends ApplicationAdapter {
         spaceshipMesh.setIndices(data.meshes.get(0).parts[0].indices);
         camera = new MoveablePCamera();
         model = new ModelObject(spaceshipMesh, 0.6f, new Vector3(0.5f, 0.5f, 0), new Vector3(0, 0, 0));
-        pointLight = new PointLight(new Vector3(0, 3, 0), new Vector3(0.3f, 1.0f, 0.3f), 1);
+        directionalLight = new DirectionalLight(new Vector3(0, 3, 0), new Vector3(0.3f, 1.0f, 0.3f), 1);
     }
 
     @Override
-    public void render () {
+    public void render() {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
@@ -59,9 +58,9 @@ public class PointLightScene extends ApplicationAdapter {
         shaderProgram.begin();
         shaderProgram.setUniformMatrix("u_model", model.getTRS());
         shaderProgram.setUniformMatrix("u_mvp", model.getTRS().mul(camera.getProjection()));
-        shaderProgram.setUniform4fv("u_light_pos", pointLight.getPositionAsV4(), 0, 4);
-        shaderProgram.setUniform4fv("u_light_c", pointLight.getColorAsV4(), 0, 4);
-        shaderProgram.setUniformf("u_light_in", pointLight.getIntensity());
+        shaderProgram.setUniform4fv("u_light_dir", directionalLight.getRotationAsV4(), 0, 4);
+        shaderProgram.setUniform4fv("u_light_c", directionalLight.getColorAsV4(), 0, 4);
+        shaderProgram.setUniformf("u_light_in", directionalLight.getIntensity());
         shaderProgram.setUniformf("u_shininess", model.getShininess());
         shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
         spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);

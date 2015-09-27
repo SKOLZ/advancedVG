@@ -2,14 +2,11 @@ package com.test.gameTest.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.test.gameTest.OCameraScene;
-import com.test.gameTest.PCameraScene;
-import com.test.gameTest.PointLightScene;
-import com.test.gameTest.SpotlightScene;
+import com.test.gameTest.DirectionalLightScene;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new SpotlightScene(), config);
+		new LwjglApplication(new DirectionalLightScene(), config);
 	}
 }
