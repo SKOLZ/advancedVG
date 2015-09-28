@@ -13,44 +13,22 @@ import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.test.camera.GameCamera;
-import com.test.camera.MoveablePCamera;
+import com.test.camera.MoveableOCamera;
+import com.test.camera.OCamera;
 
-public class PCameraScene extends ApplicationAdapter {
-    Mesh spaceshipMesh;
-    ShaderProgram shaderProgram;
-    GameCamera camera;
-    Texture texture;
+public class PCameraScene extends BaseScene {
 
     @Override
     public void create () {
-        String vs = Gdx.files.internal("defaultVS.glsl").readString();
-        String fs = Gdx.files.internal("defaultFS.glsl").readString();
-        shaderProgram = new ShaderProgram(vs, fs);
-        if (!shaderProgram.isCompiled()) {
-            System.out.println(shaderProgram.getLog());
-        }
-        ModelLoader<?> loader = new ObjLoader();
-        ModelData data = loader.loadModelData(Gdx.files.internal("ship.obj"));
-        texture = new Texture("ship.png");
-        spaceshipMesh = new Mesh(true,
-                data.meshes.get(0).vertices.length,
-                data.meshes.get(0).parts[0].indices.length,
-                VertexAttribute.Position(), VertexAttribute.Normal(), VertexAttribute.TexCoords(0));
-        spaceshipMesh.setVertices(data.meshes.get(0).vertices);
-        spaceshipMesh.setIndices(data.meshes.get(0).parts[0].indices);
-        camera = new MoveablePCamera();
+        super.create();
+        loadShader("defaultVS.glsl", "defaultFS.glsl");
     }
 
     @Override
     public void render () {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-        Gdx.gl.glDepthFunc(GL20.GL_LESS);
-        texture.bind();
-        shaderProgram.setUniformi("u_texture", 0);
-        camera.update();
+        super.render();
         shaderProgram.begin();
         shaderProgram.setUniformMatrix("u_mvp", camera.getProjection());
         spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
