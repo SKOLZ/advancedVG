@@ -26,10 +26,11 @@ public class BaseScene extends ApplicationAdapter {
     GameCamera camera;
     Texture texture;
     ModelObject model;
+    ModelLoader<?> loader;
 
     @Override
     public void create() {
-        ModelLoader<?> loader = new ObjLoader();
+        loader = new ObjLoader();
         ModelData data = loader.loadModelData(Gdx.files.internal("ship.obj"));
         texture = new Texture("ship.png");
         spaceshipMesh = new Mesh(true,
@@ -48,6 +49,7 @@ public class BaseScene extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
         Gdx.gl.glDepthFunc(GL20.GL_LESS);
+
         texture.bind();
         camera.update();
     }

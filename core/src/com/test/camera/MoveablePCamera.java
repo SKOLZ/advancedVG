@@ -3,12 +3,21 @@ package com.test.camera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
+import com.test.base.ModelObject;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class MoveablePCamera extends PCamera {
     public float moveSpeed = 0.04f;
     public float rotSpeed = 0.02f;
     public int i = 0;
     public int MAX = 100;
+    public List<ModelObject> models = new LinkedList<ModelObject>();
+
+    public void addModel(ModelObject model) {
+        models.add(model);
+    }
 
     public void update() {
         i++;
@@ -16,6 +25,11 @@ public class MoveablePCamera extends PCamera {
             i = 0;
             System.out.println("Rotation: " + rotation);
             System.out.println("Position: " + position);
+            System.out.println("Models: ");
+            for(ModelObject model: models) {
+                System.out.println("Rotation: " + model.getRotation());
+                System.out.println("Position: " + model.getPosition());
+            }
         }
         checkForwardOrBack();
         checkLeftOrRight();

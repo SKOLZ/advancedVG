@@ -20,6 +20,12 @@ public class ModelObject extends BaseObject {
         setShininess(shininess);
     }
 
+    public ModelObject(Mesh mesh, float shininess, Vector3 position, Vector3 rotation, Vector3 scale) {
+        super(position, rotation, scale);
+        setMesh(mesh);
+        setShininess(shininess);
+    }
+
     public Mesh getMesh() { return mesh; }
     public void setMesh(Mesh mesh) { this.mesh = mesh; }
 

@@ -102,6 +102,10 @@ public class BaseObject implements GameObject {
                         position.x, position.y, position.z, 1 });
     }
 
+    public Matrix4 getRotationMatrix() {
+        return (getXRotationMatrix().mul(getYRotationMatrix()).mul(getZRotationMatrix()));
+    }
+
     public Matrix4 getScaleMatrix() {
         return new Matrix4(
                 new float[] { scale.x, 0, 0, 0,
