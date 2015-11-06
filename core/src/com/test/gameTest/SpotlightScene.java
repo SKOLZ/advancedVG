@@ -38,6 +38,7 @@ public class SpotlightScene extends BaseScene {
         super.render();
         shaderProgram.begin();
         shaderProgram.setUniformMatrix("u_model", model.getTRS());
+        shaderProgram.setUniformMatrix("u_rot", model.getRotationMatrix());
         shaderProgram.setUniformMatrix("u_mvp", model.getTRS().mul(camera.getProjection()));
         shaderProgram.setUniform4fv("u_light_pos", spotlight.getPositionAsV4(), 0, 4);
         shaderProgram.setUniform4fv("u_light_c", spotlight.getColorAsV4(), 0, 4);
