@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector3;
 import com.test.base.ModelObject;
 import com.test.camera.MoveablePCamera;
+import com.test.camera.OCamera;
 import com.test.light.DirectionalLight;
 
 public class DirectionalShadowScene extends BaseScene {
@@ -27,7 +28,7 @@ public class DirectionalShadowScene extends BaseScene {
     public void create() {
         super.create();
         loadShader("defaultShadowVS.glsl", "directional-shadow-FS.glsl");
-        directionalLight = new DirectionalLight(new Vector3(0, 3, 0), new Vector3(0.3f, 1.0f, 0.3f), 1);
+        directionalLight = new DirectionalLight(new Vector3(0, 3, 0), new Vector3(0, 0, 0), 1, OCamera.DEFAULT_NEAR, OCamera.DEFAULT_FAR);
         
         directionalFb = new FrameBuffer(Pixmap.Format.RGB888, 4096, 4096, true);
         
@@ -57,10 +58,12 @@ public class DirectionalShadowScene extends BaseScene {
         
         directionalFb.end();
 
+        loadShader("defaultShadowVS.glsl", "directional-shadow-FS.glsl");
         shaderProgram.begin();
-        
+
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         shaderProgram.setUniformMatrix("u_model", model.getTRS());
+        shaderProgram.setUniformi("u_texture", 0);
         shaderProgram.setUniformMatrix("u_rot", model.getRotationMatrix());
         shaderProgram.setUniformMatrix("u_mvp", camera.getProjection().mul(model.getTRS()));
         shaderProgram.setUniform4fv("u_light_dir", directionalLight.getRotationAsV4(), 0, 4);
