@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -45,21 +46,23 @@ public class BaseScene extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-        Gdx.gl.glDepthFunc(GL20.GL_LESS);
+        Gdx.gl20.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Gdx.gl20.glEnable(GL20.GL_DEPTH_TEST);
+        Gdx.gl20.glDepthFunc(GL20.GL_LEQUAL);
+        Gdx.gl20.glEnable(GL20.GL_BLEND);
+        Gdx.gl20.glBlendFunc(GL20.GL_SRC_COLOR, GL20.GL_SRC_COLOR);
 
-        texture.bind();
         camera.update();
     }
 
-    public void loadShader(String vshader, String fshader) {
+    public ShaderProgram loadShader(String vshader, String fshader) {
         String vs = Gdx.files.internal(vshader).readString();
         String fs = Gdx.files.internal(fshader).readString();
-        shaderProgram = new ShaderProgram(vs, fs);
-        if (!shaderProgram.isCompiled()) {
-            System.out.println(shaderProgram.getLog());
+        ShaderProgram sp = new ShaderProgram(vs, fs);
+        if (!sp.isCompiled()) {
+            System.out.println(sp.getLog());
         }
+        return sp;
     }
 }

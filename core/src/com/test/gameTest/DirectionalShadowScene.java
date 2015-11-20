@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
 import com.test.base.ModelObject;
 import com.test.camera.MoveablePCamera;
@@ -22,13 +23,16 @@ public class DirectionalShadowScene extends BaseScene {
     ModelObject floor;
     Texture floorTxt;
     FrameBuffer directionalFb;
-    
+    ShaderProgram zbuffersp;
+    ShaderProgram depthsp;
 
     @Override
     public void create() {
         super.create();
-        loadShader("defaultShadowVS.glsl", "directional-shadow-FS.glsl");
-        directionalLight = new DirectionalLight(new Vector3(0, 3, 0), new Vector3(0, 0, 0), 1, OCamera.DEFAULT_NEAR, OCamera.DEFAULT_FAR);
+        shaderProgram = loadShader("defaultShadowVS.glsl", "directional-shadow-FS.glsl");
+        zbuffersp = loadShader("defaultVS.glsl", "single-color-FS.glsl");
+        depthsp = loadShader("defaultVS.glsl", "depth-FS.glsl");
+        directionalLight = new DirectionalLight(new Vector3(0, 3, 0), new Vector3(1, 0, 0), 1, OCamera.DEFAULT_NEAR, OCamera.DEFAULT_FAR);
         
         directionalFb = new FrameBuffer(Pixmap.Format.RGB888, 4096, 4096, true);
         
@@ -51,17 +55,17 @@ public class DirectionalShadowScene extends BaseScene {
         super.render();
 
         directionalFb.begin();
-        
+
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT | Gdx.gl20.GL_DEPTH_BUFFER_BIT);
         renderZShader(directionalLight);
         renderDepthShader(directionalLight);
-        
+
         directionalFb.end();
 
-        loadShader("defaultShadowVS.glsl", "directional-shadow-FS.glsl");
         shaderProgram.begin();
 
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
+        texture.bind();
         shaderProgram.setUniformMatrix("u_model", model.getTRS());
         shaderProgram.setUniformi("u_texture", 0);
         shaderProgram.setUniformMatrix("u_rot", model.getRotationMatrix());
@@ -79,6 +83,7 @@ public class DirectionalShadowScene extends BaseScene {
         
         spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
 
+        Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE0);
         floorTxt.bind();
         shaderProgram.setUniformMatrix("u_model", floor.getTRS());
         shaderProgram.setUniformMatrix("u_rot", floor.getRotationMatrix());
@@ -89,46 +94,42 @@ public class DirectionalShadowScene extends BaseScene {
         shaderProgram.setUniformf("u_shininess", floor.getShininess());
         shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
         floor.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
-        
+
         shaderProgram.end();
     }
-    
+
     private void renderZShader(DirectionalLight dl) {
-    	loadShader("defaultVS.glsl", "single-color-FS.glsl");
-    	
-    	shaderProgram.begin();
-    	
+    	zbuffersp.begin();
+
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         texture.bind();
-        shaderProgram.setUniformMatrix("u_mvp", dl.getViewProjection().mul(model.getTRS()));
-        shaderProgram.setUniform4fv("u_ambient_color", new float[] {0, 0, 0, 0}, 0, 4);
-        model.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
-        
+        zbuffersp.setUniformMatrix("u_mvp", dl.getViewProjection().mul(model.getTRS()));
+        zbuffersp.setUniform4fv("u_ambient_color", new float[] {0, 0, 0, 0}, 0, 4);
+        model.getMesh().render(zbuffersp, GL20.GL_TRIANGLES);
+
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         floorTxt.bind();
-        shaderProgram.setUniformMatrix("u_mvp", dl.getViewProjection().mul(floor.getTRS()));
-        shaderProgram.setUniform4fv("u_ambient_color", new float[] {0, 0, 0, 0}, 0, 4);
-        floor.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
-    	
-    	shaderProgram.end();
+        zbuffersp.setUniformMatrix("u_mvp", dl.getViewProjection().mul(floor.getTRS()));
+        zbuffersp.setUniform4fv("u_ambient_color", new float[] {0, 0, 0, 0}, 0, 4);
+        floor.getMesh().render(zbuffersp, GL20.GL_TRIANGLES);
+
+    	zbuffersp.end();
     }
 
     private void renderDepthShader(DirectionalLight dl) {
-    	loadShader("defaultVS.glsl", "depth-FS.glsl");
-    	
-    	shaderProgram.begin();
+    	depthsp.begin();
 
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
     	texture.bind();
-    	shaderProgram.setUniformMatrix("u_mvp", dl.getViewProjection().mul(model.getTRS()));
-        model.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
+    	depthsp.setUniformMatrix("u_mvp", dl.getViewProjection().mul(model.getTRS()));
+        model.getMesh().render(depthsp, GL20.GL_TRIANGLES);
         
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         floorTxt.bind();
-        shaderProgram.setUniformMatrix("u_mvp", dl.getViewProjection().mul(floor.getTRS()));
-        floor.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
+        depthsp.setUniformMatrix("u_mvp", dl.getViewProjection().mul(floor.getTRS()));
+        floor.getMesh().render(depthsp, GL20.GL_TRIANGLES);
     	
-    	shaderProgram.end();
+    	depthsp.end();
     	
     }
 }

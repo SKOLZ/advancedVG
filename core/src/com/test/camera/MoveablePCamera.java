@@ -52,11 +52,11 @@ public class MoveablePCamera extends PCamera {
         }
     }
 
-    public void moveForward() {
+    public void moveBackward() {
         position.add(getForward().scl(moveSpeed));
     }
 
-    public void moveBackward() {
+    public void moveForward() {
         position.add(getForward().scl(-moveSpeed));
     }
 
