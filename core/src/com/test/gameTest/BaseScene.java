@@ -31,6 +31,12 @@ public class BaseScene extends ApplicationAdapter {
 
     @Override
     public void create() {
+        Gdx.gl20.glEnable(GL20.GL_DEPTH_TEST);
+        Gdx.gl20.glDepthFunc(GL20.GL_LESS);
+
+        Gdx.gl20.glEnable(GL20.GL_BLEND);
+        Gdx.gl20.glBlendFunc(GL20.GL_ONE, GL20.GL_ZERO);
+    	
         loader = new ObjLoader();
         ModelData data = loader.loadModelData(Gdx.files.internal("ship.obj"));
         texture = new Texture("ship.png");
@@ -46,12 +52,8 @@ public class BaseScene extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Gdx.gl20.glClearColor(0.1f, 0.1f, 0.1f, 1);
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        Gdx.gl20.glEnable(GL20.GL_DEPTH_TEST);
-        Gdx.gl20.glDepthFunc(GL20.GL_LEQUAL);
-        Gdx.gl20.glEnable(GL20.GL_BLEND);
-        Gdx.gl20.glBlendFunc(GL20.GL_SRC_COLOR, GL20.GL_SRC_COLOR);
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
     }
