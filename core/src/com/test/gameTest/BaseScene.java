@@ -34,7 +34,7 @@ public class BaseScene extends ApplicationAdapter {
         Gdx.gl20.glDepthFunc(GL20.GL_LESS);
 
         Gdx.gl20.glEnable(GL20.GL_BLEND);
-        Gdx.gl20.glBlendFunc(GL20.GL_ONE, GL20.GL_ONE);
+        Gdx.gl20.glBlendFunc(GL20.GL_ONE, GL20.GL_ZERO);
     	
         loader = new ObjLoader();
         ModelData data = loader.loadModelData(Gdx.files.internal("ship.obj"));
