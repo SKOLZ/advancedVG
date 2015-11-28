@@ -29,27 +29,27 @@ void main()
     );
 
 	//diffuse
-  vec4 light = max(0, (dot(normal.xyz, u_light_dir.xyz))) * texture_color * u_light_in;
+  	vec4 light = max(0, (dot(normal.xyz, normalize(u_light_dir.xyz)))) * texture_color * u_light_in;
 	vec4 diffuse = light * u_light_c;
 
 	//specular
-  vec4 position = u_model * v_position;
+  	vec4 position = u_model * v_position;
   
-  vec4 v_vec = position * u_camera_pos;
-  vec4 r_vec = reflect(-normalize(u_light_dir), normal);
-  vec4 resulting_light = max(0, pow(dot(r_vec, v_vec), u_shininess)) * texture_color;
-  vec4 specular = resulting_light * u_light_c;
-
-  float bias = 0.0005 * tan(acos(clamp(dot(normal, u_light_dir), 0, 1)));
-  bias = clamp(bias, 0, 0.0005);
-  float visibility = 1.0;
-  const vec4 unpackFactors = vec4(1, 1/255.0, 1/(255.0 * 255.0), 1/(255.0 * 255.0 * 255.0));
-  for (int i=0; i < 9; i++) {
-    vec4 txt = texture2D(u_shadow_map, ((v_shadow_coord.xy + poissonDisk[i]/700.0)));
-    float pDotU = dot(txt, unpackFactors);
-	if (pDotU < (v_shadow_coord.z - bias)) {
-	  visibility -= 0.1;
-	}
-  }
+	vec4 v_vec = normalize(u_camera_pos - position);
+	vec4 r_vec = reflect(-normalize(u_light_dir), normal);
+	vec4 resulting_light = max(0, pow(dot(r_vec, v_vec), u_shininess)) * texture_color;
+	vec4 specular = resulting_light * u_light_c;
+	
+	float bias = 0.0005 * tan(acos(clamp(dot(normal, u_light_dir), 0, 1)));
+  	bias = clamp(bias, 0, 0.0005);
+  	float visibility = 1.0;
+  	const vec4 unpackFactors = vec4(1, 1/255.0, 1/(255.0 * 255.0), 1/(255.0 * 255.0 * 255.0));
+  	for (int i=0; i < 9; i++) {
+    	vec4 txt = texture2D(u_shadow_map, ((v_shadow_coord.xy + poissonDisk[i]/700.0)));
+    	float pDotU = dot(txt, unpackFactors);
+		if (pDotU < (v_shadow_coord.z - bias)) {
+	  		visibility -= 0.1;
+		}
+  	}
 	gl_FragColor = vec4(diffuse.xyz * visibility + specular.xyz * visibility, 1);
 }

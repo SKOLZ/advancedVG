@@ -26,13 +26,13 @@ void main() {
 	vec4 normal = normalize(v_normal);
 	
 	//diffuse
-	vec4 light = max(0, (dot(normal.xyz, u_light_dir.xyz))) * texture_color * u_light_in;
+	vec4 light = max(0, (dot(normal.xyz, normalize(u_light_dir.xyz)))) * texture_color * u_light_in;
     vec4 diffuse = light * u_light_c;
     
     //specular
     vec4 position = u_model * v_position;
     
-    vec4 v_vec = position * u_camera_pos;
+    vec4 v_vec = normalize(u_camera_pos - position);
     vec4 r_vec = reflect(-normalize(u_light_dir), normal);
     vec4 resulting_light = max(0, pow(dot(r_vec, v_vec), u_shininess)) * texture_color;
     vec4 specular = resulting_light * u_light_c;
