@@ -37,6 +37,7 @@ public class AnimationScene extends BaseScene {
         if (!animProgram.isCompiled()) {
             System.out.println(animProgram.getLog());
         }
+        model.setPosition(new Vector3(1.4f, 0.2f, 0));
 	}
 
     @Override
@@ -62,7 +63,7 @@ public class AnimationScene extends BaseScene {
         texture.bind();
     	shaderProgram.setUniformMatrix("u_model", model.getTRS());
         shaderProgram.setUniformMatrix("u_rot", model.getRotationMatrix());
-        shaderProgram.setUniformMatrix("u_mvp", model.getTRS().mul(camera.getProjection()));
+        shaderProgram.setUniformMatrix("u_mvp", camera.getProjection().mul(model.getTRS()));
         shaderProgram.setUniformi("u_texture", 0);
         shaderProgram.setUniform4fv("u_light_dir", directionalLight.getRotationAsV4(), 0, 4);
         shaderProgram.setUniform4fv("u_light_c", directionalLight.getColorAsV4(), 0, 4);
