@@ -35,10 +35,12 @@ public class DirectionalShadowScene extends BaseScene {
     @Override
     public void create() {
         super.create();
+        model.setPosition(new Vector3(model.getPosition().x, model.getPosition().y, 0f));
+
         shaderProgram = loadShader("defaultShadowVS.glsl", "directional-shadow-FS.glsl");
         depthsp = loadShader("defaultVS.glsl", "depth-FS.glsl");
-        directionalLight = new DirectionalLight(new Vector3(0, 0, 0), new Vector3(0.6f, 1.0f, 0.6f), 1, OCamera.DEFAULT_NEAR, OCamera.DEFAULT_FAR);
-        
+        directionalLight = new DirectionalLight(new Vector3(0, 3, 0), new Vector3(0.3f, 1.0f, 0.3f), 1, OCamera.DEFAULT_NEAR, OCamera.DEFAULT_FAR);
+        directionalLight.setPosition(new Vector3(0, 0, 50));
         directionalFb = new FrameBuffer(Pixmap.Format.RGB888, 4096, 4096, true);
         
         ModelLoader<?> cubeLoader = new ObjLoader();
@@ -54,14 +56,10 @@ public class DirectionalShadowScene extends BaseScene {
         ((MoveablePCamera)camera).addModel(model);
     }
 
-
 	@Override
     public void render() {
         super.render();
-
         directionalFb.begin();
-
-        Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT | Gdx.gl20.GL_DEPTH_BUFFER_BIT);
 
         renderDepthShader(directionalLight);
 
@@ -111,12 +109,12 @@ public class DirectionalShadowScene extends BaseScene {
 
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         texture.bind();
-    	depthsp.setUniformMatrix("u_mvp", dl.getViewProjection().mul(model.getTRS()));
+    	depthsp.setUniformMatrix("u_mvp", model.getTRS().mul(dl.getViewProjection()));
         model.getMesh().render(depthsp, GL20.GL_TRIANGLES);
         
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         floorTxt.bind();
-        depthsp.setUniformMatrix("u_mvp", dl.getViewProjection().mul(floor.getTRS()));
+        depthsp.setUniformMatrix("u_mvp", floor.getTRS().mul(dl.getViewProjection()));
         floor.getMesh().render(depthsp, GL20.GL_TRIANGLES);
     	
     	depthsp.end();
