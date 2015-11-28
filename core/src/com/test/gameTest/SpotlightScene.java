@@ -36,6 +36,7 @@ public class SpotlightScene extends BaseScene {
     @Override
     public void render () {
         super.render();
+        texture.bind();
         shaderProgram.begin();
         shaderProgram.setUniformMatrix("u_model", model.getTRS());
         shaderProgram.setUniformMatrix("u_rot", model.getRotationMatrix());
