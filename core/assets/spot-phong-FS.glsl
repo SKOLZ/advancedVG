@@ -38,7 +38,7 @@ void main() {
     float angle_cos = dot(direction, normalize(u_light_dir));
 	if(angle_cos < u_light_max_angle_cos) {
 	    if(u_light_max_angle_cos > 0.0001f) {
-	        inside_light = 1.0f - angle_cos;
+	        inside_light = angle_cos * 0.25f;
 	    }
 	    if(inside_light < 0.0f) {
 	        inside_light = 0.0f;
@@ -46,7 +46,7 @@ void main() {
 	}
 
 	//diffuse
-	vec4 light = max(0, (dot(normal.xyz, direction.xyz))) * texture_color * u_light_in;
+	vec4 light = max(0, (dot(normal.xyz, normalize(direction.xyz)))) * texture_color * u_light_in;
     vec4 diffuse = light * u_light_c;
 
     //specular

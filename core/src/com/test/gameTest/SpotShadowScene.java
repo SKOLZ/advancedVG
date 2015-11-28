@@ -26,7 +26,7 @@ public class SpotShadowScene extends BaseScene{
     @Override
     public void create() {
         super.create();
-        loadShader("defaultVS.glsl", "spot-phong-FS.glsl");
+        shaderProgram = loadShader("defaultVS.glsl", "spot-phong-FS.glsl");
         spotlight = new Spotlight(new Vector3(0, 3, 0), new Vector3(0, (float)Math.PI/4 + 0.3f, 0), new Vector3(0.3f, 1.0f, 0.3f), 1, (float)Math.PI / 4);
         ModelLoader<?> cubeLoader = new ObjLoader();
         ModelData floorData = cubeLoader.loadModelData(Gdx.files.internal("box.obj"));
@@ -46,6 +46,7 @@ public class SpotShadowScene extends BaseScene{
         super.render();
 
         shaderProgram.begin();
+        texture.bind();
         shaderProgram.setUniformMatrix("u_model", model.getTRS());
         shaderProgram.setUniformMatrix("u_rot", model.getRotationMatrix());
         shaderProgram.setUniformMatrix("u_mvp", camera.getProjection().mul(model.getTRS()));
