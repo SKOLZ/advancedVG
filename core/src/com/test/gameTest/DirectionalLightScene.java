@@ -24,13 +24,14 @@ public class DirectionalLightScene extends BaseScene {
     @Override
     public void create() {
         super.create();
-        loadShader("defaultVS.glsl", "directional-phong-FS.glsl");
+        shaderProgram = loadShader("defaultVS.glsl", "directional-phong-FS.glsl");
         directionalLight = new DirectionalLight(new Vector3(0, 3, 0), new Vector3(0.3f, 1.0f, 0.3f), 1);
     }
 
     @Override
     public void render() {
         super.render();
+        texture.bind();
         shaderProgram.begin();
         shaderProgram.setUniformMatrix("u_model", model.getTRS());
         shaderProgram.setUniformMatrix("u_rot", model.getRotationMatrix());

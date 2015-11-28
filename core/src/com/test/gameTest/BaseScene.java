@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -57,12 +58,13 @@ public class BaseScene extends ApplicationAdapter {
         camera.update();
     }
 
-    public void loadShader(String vshader, String fshader) {
+    public ShaderProgram loadShader(String vshader, String fshader) {
         String vs = Gdx.files.internal(vshader).readString();
         String fs = Gdx.files.internal(fshader).readString();
-        shaderProgram = new ShaderProgram(vs, fs);
-        if (!shaderProgram.isCompiled()) {
-            System.out.println(shaderProgram.getLog());
+        ShaderProgram sp = new ShaderProgram(vs, fs);
+        if (!sp.isCompiled()) {
+            System.out.println(sp.getLog());
         }
+        return sp;
     }
 }

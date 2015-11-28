@@ -26,7 +26,7 @@ public class AnimationScene extends BaseScene {
 	@Override
     public void create() {
         super.create();
-        loadShader("defaultVS.glsl", "directional-phong-FS.glsl");
+        shaderProgram = loadShader("defaultVS.glsl", "directional-phong-FS.glsl");
         directionalLight = new DirectionalLight(new Vector3(0, 3, 0), new Vector3(0.3f, 1.0f, 0.3f), 1);
         assetManager.load("Dave.g3db", Model.class);
         loading = true;

@@ -29,6 +29,7 @@ public class PCameraScene extends BaseScene {
     @Override
     public void render () {
         super.render();
+        texture.bind();
         shaderProgram.begin();
         shaderProgram.setUniformMatrix("u_mvp", camera.getProjection());
         spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
