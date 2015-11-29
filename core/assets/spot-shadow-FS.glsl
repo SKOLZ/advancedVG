@@ -56,11 +56,12 @@ void main() {
   vec3 convertedShadowCoord = (v_shadow_coord.xyz + vec3(1,1,1)) / 2.0;
        // bias = clamp(bias, 0, 0.0005);
    //+ poissonDisk[i]/700.0)));
+  float shadow = 1.0;
   float depthZ = unpack(texture2D(u_shadow_map, v_shadow_coord.xy));
   float diff = depthZ - v_shadow_coord.z; 
-  if(v_shadow_coord.x <= 1.0 && v_shadow_coord.x >= -1.0 && v_shadow_coord.x.y <= 1.0 && v_shadow_coord.x.y >= -1.0){
-      if ( convertedShadowCoord.z - bias > unpack(texture2D(u_shadowMap, convertedShadowCoord.xy)) ){
-        inside_light -= 0.7;
+  if(v_shadow_coord.x <= 1.0 && v_shadow_coord.x >= -1.0 && v_shadow_coord.y <= 1.0 && v_shadow_coord.y >= -1.0){
+      if ( convertedShadowCoord.z - bias > unpack(texture2D(u_shadow_map, v_shadow_coord.xy)) ){
+        shadow -= 0.7;
       }
   }
 
@@ -69,11 +70,12 @@ void main() {
       if(u_light_max_angle_cos > 0.0001f) {
           inside_light = angle_cos * 0.25f;
       }
-      if(inside_light < 0.0f) {
-          inside_light = 0.0f;
-      }
+      
   }
-
+  inside_light *= shadow;
+  if(inside_light < 0.0f) {
+          inside_light = 0.0f;
+  }
   //diffuse
   vec4 light = max(0, (dot(normal.xyz, normalize(direction.xyz)))) * texture_color * u_light_in;
   vec4 diffuse = light * u_light_c;
