@@ -11,7 +11,6 @@ public interface GameObject {
     Vector3 getRotation();
     void setRotation(Vector3 rot);
     float [] getRotationAsV4();
-
     Vector3 getScale();
     void setScale(Vector3 scale);
 }

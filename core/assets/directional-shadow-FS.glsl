@@ -48,7 +48,7 @@ void main()
     	vec4 txt = texture2D(u_shadow_map, ((v_shadow_coord.xy + poissonDisk[i]/700.0)));
     	float pDotU = dot(txt, unpackFactors);
 		if (pDotU < (v_shadow_coord.z - bias)) {
-	  		visibility -= 0.1;
+	  		visibility -= 0.5;
 		}
   	}
 	gl_FragColor = vec4(diffuse.xyz * visibility + specular.xyz * visibility, 1);

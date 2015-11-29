@@ -7,6 +7,6 @@ import com.test.gameTest.*;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new SpotlightScene(), config);
+		new LwjglApplication(new SpotShadowScene(), config);
 	}
 }

@@ -35,7 +35,7 @@ public class BaseScene extends ApplicationAdapter {
         Gdx.gl20.glDepthFunc(GL20.GL_LESS);
 
         Gdx.gl20.glEnable(GL20.GL_BLEND);
-        Gdx.gl20.glBlendFunc(GL20.GL_ONE, GL20.GL_ZERO);
+        Gdx.gl20.glBlendFunc(GL20.GL_ONE, GL20.GL_ONE);
     	
         loader = new ObjLoader();
         ModelData data = loader.loadModelData(Gdx.files.internal("ship.obj"));
@@ -67,5 +67,14 @@ public class BaseScene extends ApplicationAdapter {
             System.out.println(sp.getLog());
         }
         return sp;
+    }
+
+    public static float[] toDirection(Vector3 orientation) {
+        Vector3 dir = new Vector3(0, 0, 1);
+        dir.rotateRad(new Vector3(1, 0, 0), orientation.x);
+        dir.rotateRad(new Vector3(0, 1, 0), orientation.y);
+        dir.rotateRad(new Vector3(0, 0, 1), orientation.z);
+        dir = dir.nor();
+        return new float[] { dir.x, dir.y, dir.z, 0 };
     }
 }
