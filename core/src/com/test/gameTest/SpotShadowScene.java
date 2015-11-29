@@ -44,7 +44,7 @@ public class SpotShadowScene extends BaseScene{
         depthsp = loadShader("defaultVS.glsl", "depth-FS.glsl");
         model.setPosition(new Vector3(0, 2, 0));
         spotlight = new Spotlight(new Vector3(0, 5, 0), new Vector3((float)-Math.PI/2, 0f, 0), new Vector3(0.3f, 1.0f, 0.3f), 1, (float)Math.PI / 10, PCamera.DEFAULT_NEAR, PCamera.DEFAULT_FAR);
-        spotFb = new FrameBuffer(Pixmap.Format.RGB888, 4096, 4096, true);
+        spotFb = new FrameBuffer(Pixmap.Format.RGBA8888, 4096, 4096, true);
 
         ModelLoader<?> cubeLoader = new ObjLoader();
         ModelData floorData = cubeLoader.loadModelData(Gdx.files.internal("box.obj"));
@@ -80,16 +80,14 @@ public class SpotShadowScene extends BaseScene{
 
         spotFb.end();
 
-/*
-        Texture tt = spotFb.getColorBufferTexture();
+        /*Texture tt = spotFb.getColorBufferTexture();
         fullscreenProgram.begin();
         Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE0);
         tt.bind();
         fullscreenProgram.setUniformi("u_texture", 0);
         mesh.render(fullscreenProgram, GL20.GL_TRIANGLES);
         fullscreenProgram.end();
-*/
-
+        */
 
         shaderProgram.begin();
 
@@ -110,6 +108,7 @@ public class SpotShadowScene extends BaseScene{
         shaderProgram.setUniformf("u_light_max_angle_cos", (float) Math.cos((double) spotlight.getMaxAngle()));
         shaderProgram.setUniformf("u_shininess", model.getShininess());
         shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
+        shaderProgram.setUniformMatrix("u_light_bias_mvp", biasMat.cpy().mul(spotlight.getProjection().mul(model.getTRS())));
         spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
 
         Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE0);
@@ -124,6 +123,7 @@ public class SpotShadowScene extends BaseScene{
         shaderProgram.setUniformf("u_light_max_angle_cos", (float)Math.cos((double)spotlight.getMaxAngle()));
         shaderProgram.setUniformf("u_shininess", floor.getShininess());
         shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
+        shaderProgram.setUniformMatrix("u_light_bias_mvp", biasMat.cpy().mul(spotlight.getProjection().mul(floor.getTRS())));
         floor.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
         shaderProgram.end();
 
@@ -139,10 +139,12 @@ public class SpotShadowScene extends BaseScene{
         model.getMesh().render(depthsp, GL20.GL_TRIANGLES);
 
 
+
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         floorTxt.bind();
         depthsp.setUniformMatrix("u_mvp", sl.getProjection().mul(floor.getTRS()));
         floor.getMesh().render(depthsp, GL20.GL_TRIANGLES);
+
 
 
         depthsp.end();

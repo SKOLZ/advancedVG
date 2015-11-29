@@ -34,6 +34,12 @@ uniform float u_light_max_angle_cos;
 uniform sampler2D u_shadow_map;
 
 
+float unpack(const vec4 rgba_depth) {
+    const vec4 bit_shift = vec4(1.0/(256.0*256.0*256.0), 1.0/(256.0*256.0), 1.0/256.0, 1.0);
+    float depth = dot(rgba_depth, bit_shift);
+    return depth;
+}
+
 void main() {
   const vec2 poissonDisk[9] = vec2[](
       vec2(0.95581, -0.18159), vec2(0.50147, -0.35807), vec2(0.69607, 0.35559),
@@ -41,19 +47,21 @@ void main() {
       vec2(0.11915, 0.78449), vec2(-0.34296, 0.51575), vec2(-0.60380, -0.41527)
     );
 
-    vec4 texture_color = texture2D(u_texture, v_texCoords);
+  vec4 texture_color = texture2D(u_texture, v_texCoords);
   vec4 position = v_position;
   vec4 normal = normalize(v_normal);
   vec4 direction = normalize(u_light_pos - position);
   float inside_light = 1.0f;
-  float bias = 0.0005 * tan(acos(clamp(dot(normal, u_light_dir), 0, 1)));
-        bias = clamp(bias, 0, 0.0005);
-  const vec4 unpackFactors = vec4(1.0/(256.0*256.0*256.0), 1.0/(256.0*256.0), 1.0/256.0, 1.0);
-      //for (int i=0; i < 9; i++) {
-  vec4 txt = texture2D(u_shadow_map, v_shadow_coord.xy); //+ poissonDisk[i]/700.0)));
-  float z = dot(txt, unpackFactors);
-  if (z < (v_shadow_coord.z - bias)) {
-    inside_light -= 0.7;
+  float bias = 0.0005; // * tan(acos(clamp(dot(normal, u_light_dir), 0, 1)));
+  vec3 convertedShadowCoord = (v_shadow_coord.xyz + vec3(1,1,1)) / 2.0;
+       // bias = clamp(bias, 0, 0.0005);
+   //+ poissonDisk[i]/700.0)));
+  float depthZ = unpack(texture2D(u_shadow_map, v_shadow_coord.xy));
+  float diff = depthZ - v_shadow_coord.z; 
+  if(v_shadow_coord.x <= 1.0 && v_shadow_coord.x >= -1.0 && v_shadow_coord.x.y <= 1.0 && v_shadow_coord.x.y >= -1.0){
+      if ( convertedShadowCoord.z - bias > unpack(texture2D(u_shadowMap, convertedShadowCoord.xy)) ){
+        inside_light -= 0.7;
+      }
   }
 
   float angle_cos = dot(direction, normalize(u_light_dir));
