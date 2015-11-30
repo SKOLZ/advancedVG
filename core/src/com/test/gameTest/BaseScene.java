@@ -48,7 +48,7 @@ public class BaseScene extends ApplicationAdapter {
         spaceshipMesh.setIndices(data.meshes.get(0).parts[0].indices);
         model = new ModelObject(spaceshipMesh, 0.6f, new Vector3(0.5f, 0.5f, 0), new Vector3(0, 0, 0));
         camera = new MoveablePCamera();
-        
+
     }
 
     @Override
