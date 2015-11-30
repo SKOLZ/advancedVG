@@ -42,7 +42,7 @@ public class SpotShadowScene extends BaseScene{
         fullscreenProgram = loadShader("fullscreenVS.glsl", "fullscreenFS.glsl");
         shaderProgram = loadShader("defaultShadowVS.glsl", "spot-shadow-FS.glsl");
         depthsp = loadShader("defaultVS.glsl", "depth-FS.glsl");
-        model.setPosition(new Vector3(0, 2, 0));
+        model.setPosition(new Vector3(0, 0, 0));
         spotlight = new Spotlight(new Vector3(0, 5, 0), new Vector3((float)-Math.PI/2, 0, 0), new Vector3(0.3f, 1.0f, 0.3f), 1, (float)Math.PI / 10, PCamera.DEFAULT_NEAR, PCamera.DEFAULT_FAR);
         spotFb = new FrameBuffer(Pixmap.Format.RGBA8888, 4096, 4096, true);
 
@@ -91,43 +91,43 @@ public class SpotShadowScene extends BaseScene{
         mesh.render(fullscreenProgram, GL20.GL_TRIANGLES);
         fullscreenProgram.end();
 
-        /*shaderProgram.begin();
-
-        Texture sm = spotFb.getColorBufferTexture();
-        Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE2);
-        sm.bind();
-        shaderProgram.setUniformi("u_shadow_map", 2);
-
-        Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE0);
-        texture.bind();
-        shaderProgram.setUniformMatrix("u_model", model.getTRS());
-        shaderProgram.setUniformMatrix("u_rot", model.getRotationMatrix());
-        shaderProgram.setUniformMatrix("u_mvp", camera.getProjection().mul(model.getTRS()));
-        shaderProgram.setUniform4fv("u_light_pos", spotlight.getPositionAsV4(), 0, 4);
-        shaderProgram.setUniform4fv("u_light_c", spotlight.getColorAsV4(), 0, 4);
-        shaderProgram.setUniform4fv("u_light_dir", toDirection(spotlight.getRotation()), 0, 4);
-        shaderProgram.setUniformf("u_light_in", spotlight.getIntensity());
-        shaderProgram.setUniformf("u_light_max_angle_cos", (float) Math.cos((double) spotlight.getMaxAngle()));
-        shaderProgram.setUniformf("u_shininess", model.getShininess());
-        shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
-        shaderProgram.setUniformMatrix("u_light_bias_mvp", biasMat.mul(spotlight.getProjection().mul(model.getTRS())));
-        spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
-
-        Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE0);
-        floorTxt.bind();
-        shaderProgram.setUniformMatrix("u_model", floor.getTRS());
-        shaderProgram.setUniformMatrix("u_rot", floor.getRotationMatrix());
-        shaderProgram.setUniformMatrix("u_mvp", camera.getProjection().mul(floor.getTRS()));
-        shaderProgram.setUniform4fv("u_light_pos", spotlight.getPositionAsV4(), 0, 4);
-        shaderProgram.setUniform4fv("u_light_c", spotlight.getColorAsV4(), 0, 4);
-        shaderProgram.setUniform4fv("u_light_dir",toDirection(spotlight.getRotation()), 0, 4);
-        shaderProgram.setUniformf("u_light_in", spotlight.getIntensity());
-        shaderProgram.setUniformf("u_light_max_angle_cos", (float)Math.cos((double)spotlight.getMaxAngle()));
-        shaderProgram.setUniformf("u_shininess", floor.getShininess());
-        shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
-        shaderProgram.setUniformMatrix("u_light_bias_mvp", biasMat.mul(spotlight.getProjection().mul(floor.getTRS())));
-        floor.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
-        shaderProgram.end();*/
+//        shaderProgram.begin();
+//
+//        Texture sm = spotFb.getColorBufferTexture();
+//        Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE2);
+//        sm.bind();
+//        shaderProgram.setUniformi("u_shadow_map", 2);
+//
+//        Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE0);
+//        texture.bind();
+//        shaderProgram.setUniformMatrix("u_model", model.getTRS());
+//        shaderProgram.setUniformMatrix("u_rot", model.getRotationMatrix());
+//        shaderProgram.setUniformMatrix("u_mvp", camera.getProjection().mul(model.getTRS()));
+//        shaderProgram.setUniform4fv("u_light_pos", spotlight.getPositionAsV4(), 0, 4);
+//        shaderProgram.setUniform4fv("u_light_c", spotlight.getColorAsV4(), 0, 4);
+//        shaderProgram.setUniform4fv("u_light_dir", toDirection(spotlight.getRotation()), 0, 4);
+//        shaderProgram.setUniformf("u_light_in", spotlight.getIntensity());
+//        shaderProgram.setUniformf("u_light_max_angle_cos", (float) Math.cos((double) spotlight.getMaxAngle()));
+//        shaderProgram.setUniformf("u_shininess", model.getShininess());
+//        shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
+//        shaderProgram.setUniformMatrix("u_light_bias_mvp", spotlight.getProjection().mul(model.getTRS()));
+//        spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
+//
+//        Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE0);
+//        floorTxt.bind();
+//        shaderProgram.setUniformMatrix("u_model", floor.getTRS());
+//        shaderProgram.setUniformMatrix("u_rot", floor.getRotationMatrix());
+//        shaderProgram.setUniformMatrix("u_mvp", camera.getProjection().mul(floor.getTRS()));
+//        shaderProgram.setUniform4fv("u_light_pos", spotlight.getPositionAsV4(), 0, 4);
+//        shaderProgram.setUniform4fv("u_light_c", spotlight.getColorAsV4(), 0, 4);
+//        shaderProgram.setUniform4fv("u_light_dir",toDirection(spotlight.getRotation()), 0, 4);
+//        shaderProgram.setUniformf("u_light_in", spotlight.getIntensity());
+//        shaderProgram.setUniformf("u_light_max_angle_cos", (float)Math.cos((double)spotlight.getMaxAngle()));
+//        shaderProgram.setUniformf("u_shininess", floor.getShininess());
+//        shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
+//        shaderProgram.setUniformMatrix("u_light_bias_mvp", spotlight.getProjection().mul(floor.getTRS()));
+//        floor.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
+//        shaderProgram.end();
 
 
     }
