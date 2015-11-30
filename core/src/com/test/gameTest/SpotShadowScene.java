@@ -83,15 +83,15 @@ public class SpotShadowScene extends BaseScene{
         spotFb.end();
 
 
-        Texture tt = spotFb.getColorBufferTexture();
+        /*Texture tt = spotFb.getColorBufferTexture();
         fullscreenProgram.begin();
         Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE0);
         tt.bind();
         fullscreenProgram.setUniformi("u_texture", 0);
         mesh.render(fullscreenProgram, GL20.GL_TRIANGLES);
-        fullscreenProgram.end();
+        fullscreenProgram.end();*/
 
-        /*shaderProgram.begin();
+        shaderProgram.begin();
 
         Texture sm = spotFb.getColorBufferTexture();
         Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE2);
@@ -110,7 +110,7 @@ public class SpotShadowScene extends BaseScene{
         shaderProgram.setUniformf("u_light_max_angle_cos", (float) Math.cos((double) spotlight.getMaxAngle()));
         shaderProgram.setUniformf("u_shininess", model.getShininess());
         shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
-        shaderProgram.setUniformMatrix("u_light_bias_mvp", biasMat.mul(spotlight.getProjection().mul(model.getTRS())));
+        shaderProgram.setUniformMatrix("u_light_bias_mvp", spotlight.getProjection().mul(model.getTRS()));
         spaceshipMesh.render(shaderProgram, GL20.GL_TRIANGLES);
 
         Gdx.gl20.glActiveTexture(Gdx.gl20.GL_TEXTURE0);
@@ -125,9 +125,9 @@ public class SpotShadowScene extends BaseScene{
         shaderProgram.setUniformf("u_light_max_angle_cos", (float)Math.cos((double)spotlight.getMaxAngle()));
         shaderProgram.setUniformf("u_shininess", floor.getShininess());
         shaderProgram.setUniform4fv("u_camera_pos", camera.getPositionAsV4(), 0, 4);
-        shaderProgram.setUniformMatrix("u_light_bias_mvp", biasMat.mul(spotlight.getProjection().mul(floor.getTRS())));
+        shaderProgram.setUniformMatrix("u_light_bias_mvp", spotlight.getProjection().mul(floor.getTRS()));
         floor.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
-        shaderProgram.end();*/
+        shaderProgram.end();
 
 
     }
