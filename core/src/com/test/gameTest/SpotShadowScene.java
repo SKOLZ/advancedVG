@@ -1,6 +1,7 @@
 package com.test.gameTest;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.loaders.ModelLoader;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
@@ -42,9 +43,9 @@ public class SpotShadowScene extends BaseScene{
         fullscreenProgram = loadShader("fullscreenVS.glsl", "fullscreenFS.glsl");
         shaderProgram = loadShader("defaultShadowVS.glsl", "spot-shadow-FS.glsl");
         depthsp = loadShader("defaultVS.glsl", "depth-FS.glsl");
-        model.setPosition(new Vector3(0, 0, 0));
-        spotlight = new Spotlight(new Vector3(0, 5, 0), new Vector3((float)-Math.PI/2, 0, 0), new Vector3(0.3f, 1.0f, 0.3f), 1, (float)Math.PI / 10, PCamera.DEFAULT_NEAR, PCamera.DEFAULT_FAR);
-        spotFb = new FrameBuffer(Pixmap.Format.RGBA8888, 4096, 4096, true);
+        model.setPosition(new Vector3(0, 3, 0));
+        spotlight = new Spotlight(new Vector3(0, 5, 0), new Vector3((float)-Math.PI/2, 0, 0), new Vector3(1.0f, 1.0f, 1.0f), 1, (float)Math.PI / 10, PCamera.DEFAULT_NEAR, PCamera.DEFAULT_FAR);
+        spotFb = new FrameBuffer(Pixmap.Format.RGBA8888, 2048, 2048, true);
 
         ModelLoader<?> cubeLoader = new ObjLoader();
         ModelData floorData = cubeLoader.loadModelData(Gdx.files.internal("box.obj"));
@@ -70,10 +71,27 @@ public class SpotShadowScene extends BaseScene{
         meshObj = new ModelObject(mesh, 1, new Vector3(), new Vector3());
     }
 
+    public void update() {
+        if (Gdx.input.isKeyPressed(Input.Keys.J)) {
+            model.setPosition(new Vector3(model.getPosition().x + 0.01f, model.getPosition().y, model.getPosition().z));
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.L)) {
+            model.setPosition(new Vector3(model.getPosition().x - 0.01f, model.getPosition().y, model.getPosition().z));
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.I)) {
+            model.setPosition(new Vector3(model.getPosition().x, model.getPosition().y + 0.01f, model.getPosition().z));
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.K)) {
+            model.setPosition(new Vector3(model.getPosition().x, model.getPosition().y - 0.01f, model.getPosition().z));
+        }
+    }
     @Override
     public void render() {
+        update();
         Gdx.gl.glDepthFunc(GL20.GL_LEQUAL);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         super.render();
 
         spotFb.begin();
@@ -89,8 +107,8 @@ public class SpotShadowScene extends BaseScene{
         tt.bind();
         fullscreenProgram.setUniformi("u_texture", 0);
         mesh.render(fullscreenProgram, GL20.GL_TRIANGLES);
-        fullscreenProgram.end();*/
-
+        fullscreenProgram.end();
+*/
         shaderProgram.begin();
 
         Texture sm = spotFb.getColorBufferTexture();
@@ -132,8 +150,12 @@ public class SpotShadowScene extends BaseScene{
     }
 
     private void renderDepthShader(Spotlight sl) {
-        depthsp.begin();
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT | Gdx.gl20.GL_DEPTH_BUFFER_BIT);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+
+        depthsp.begin();
 
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         texture.bind();
@@ -150,6 +172,7 @@ public class SpotShadowScene extends BaseScene{
 
 
         depthsp.end();
+        Gdx.gl.glEnable(GL20.GL_BLEND);
 
     }
 }

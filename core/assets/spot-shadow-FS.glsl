@@ -57,11 +57,8 @@ void main() {
        // bias = clamp(bias, 0, 0.0005);
    //+ poissonDisk[i]/700.0)));
   float shadow = 1.0;
-  if(v_shadow_coord.x <= 1.0 && v_shadow_coord.x >= -1.0 && v_shadow_coord.y <= 1.0 && v_shadow_coord.y >= -1.0){
-      if ( convertedShadowCoord.z - bias > unpack(texture2D(u_shadow_map, convertedShadowCoord.xy))){
-        shadow -= 0.7;
-      }
-  }
+      
+  //}
 
   float angle_cos = dot(direction, normalize(u_light_dir));
   if(angle_cos < u_light_max_angle_cos) {
@@ -69,6 +66,12 @@ void main() {
           inside_light = angle_cos * 0.25f;
       }
       
+  } else {
+    if(v_shadow_coord.x <= 1.0 && v_shadow_coord.x >= -1.0 && v_shadow_coord.y <= 1.0 && v_shadow_coord.y >= -1.0){
+      if ( 0.5 > unpack(texture2D(u_shadow_map, convertedShadowCoord.xy)) ){
+          shadow -= 0.7;
+      }
+    }
   }
   inside_light *= shadow;
   if(inside_light < 0.0f) {
