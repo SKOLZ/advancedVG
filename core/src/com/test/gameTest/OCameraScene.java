@@ -23,7 +23,7 @@ public class OCameraScene extends BaseScene {
 	@Override
 	public void create () {
 		super.create();
-		loadShader("defaultVS.glsl", "defaultFS.glsl");
+		shaderProgram = loadShader("defaultVS.glsl", "defaultFS.glsl");
 		camera = new MoveableOCamera();
 	}
 
