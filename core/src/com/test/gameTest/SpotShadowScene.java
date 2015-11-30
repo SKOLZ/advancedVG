@@ -42,7 +42,7 @@ public class SpotShadowScene extends BaseScene{
         fullscreenProgram = loadShader("fullscreenVS.glsl", "fullscreenFS.glsl");
         shaderProgram = loadShader("defaultShadowVS.glsl", "spot-shadow-FS.glsl");
         depthsp = loadShader("defaultVS.glsl", "depth-FS.glsl");
-        model.setPosition(new Vector3(0, 2, 0));
+        model.setPosition(new Vector3(0, 0, 0));
         spotlight = new Spotlight(new Vector3(0, 5, 0), new Vector3((float)-Math.PI/2, 0, 0), new Vector3(0.3f, 1.0f, 0.3f), 1, (float)Math.PI / 10, PCamera.DEFAULT_NEAR, PCamera.DEFAULT_FAR);
         spotFb = new FrameBuffer(Pixmap.Format.RGBA8888, 4096, 4096, true);
 
@@ -128,7 +128,6 @@ public class SpotShadowScene extends BaseScene{
         shaderProgram.setUniformMatrix("u_light_bias_mvp", spotlight.getProjection().mul(floor.getTRS()));
         floor.getMesh().render(shaderProgram, GL20.GL_TRIANGLES);
         shaderProgram.end();
-
 
     }
 
