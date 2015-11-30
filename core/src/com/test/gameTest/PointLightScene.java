@@ -24,7 +24,7 @@ public class PointLightScene extends BaseScene {
     @Override
     public void create () {
         super.create();
-        loadShader("defaultVS.glsl", "point-phong-FS.glsl");
+        shaderProgram = loadShader("defaultVS.glsl", "point-phong-FS.glsl");
         pointLight = new PointLight(new Vector3(0, 3, 0), new Vector3(0.3f, 1.0f, 0.3f), 1);
     }
 
